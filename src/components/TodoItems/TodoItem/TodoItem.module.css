@@ -1,0 +1,10 @@
+.completed {
+    text-decoration: line-through;
+    text-decoration-color: #3da5f4
+}
+
+
+.text-primary,
+.list-wrapper .completed .remove {
+    color: #405189 !important
+}
