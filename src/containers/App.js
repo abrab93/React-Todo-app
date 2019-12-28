@@ -67,8 +67,7 @@ class App extends Component {
 
 
     render() {
-        const activeItemsLength = this.state.todoItems.filter(item => item.completed === false).length;
-        const completedItemLength = this.state.todoItems.filter(item => item.completed === true).length;;
+
         return (
             <Layout >
                 <h4 className="card-title">Awesome Todo list</h4>
@@ -84,8 +83,9 @@ class App extends Component {
                     checked={this.todoItemCompletedHandler} />
                 {this.state.todoItems.length > 0 ?
                     <Filters
-                        activeItemsLength={activeItemsLength}
-                        completedItemLength={completedItemLength}
+                        todoItems={this.state.todoItems}
+                        enableActiveFilter={this.state.activeFilter}
+                        enableCompletedFilter={this.state.completedFilter}
                         allClicked={this.allClickedHandler}
                         activeClicked={this.activeClickedHandler}
                         completedClicked={this.completedClickedHandler}
