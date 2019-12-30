@@ -36,7 +36,7 @@ class Today extends Component {
     }
 
     removeTodoItemHandler = (itemId) => {
-        console.log(itemId);
+
         axios.delete('/todos/' + itemId + '.json')
             .then(response => {
                 console.log(response);
@@ -55,10 +55,15 @@ class Today extends Component {
         const updatedItem = { ...this.state.todoItems[todoItemIndex] }
         updatedItem.completed = !updatedItem.completed;
 
-        const updateTodoItems = [...this.state.todoItems];
-        updateTodoItems[todoItemIndex] = updatedItem;
+        axios.put('/todos/' + itemId + '.json', updatedItem)
+            .then(response => {
+                console.log(response);
+                const updateTodoItems = [...this.state.todoItems];
+                updateTodoItems[todoItemIndex] = updatedItem;
 
-        this.setState({ todoItems: updateTodoItems });
+                this.setState({ todoItems: updateTodoItems });
+            })
+            .catch(error => console.log(error));;
     }
 
     allClickedHandler = () => {
