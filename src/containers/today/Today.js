@@ -3,6 +3,7 @@ import TodoItems from '../../components/TodoItems/TodoItems';
 import WriteControl from '../../components/WriteControl/WriteControl';
 import Filters from '../../components/Filters/Filters';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
+import axios from '../../axios';
 
 class Today extends Component {
 
@@ -16,12 +17,18 @@ class Today extends Component {
     addTodoItemHandler = (event) => {
         if (event.key === 'Enter') {
             if (this.state.todoItemText.trim() !== '') {
-                this.setState((prevState) => {
-                    return {
-                        todoItems: prevState.todoItems.concat({ id: (new Date()).getTime(), text: this.state.todoItemText, completed: false, createdAt: new Date() }),
-                        todoItemText: ''
-                    }
-                });
+                const todoItem = { id: (new Date()).getTime(), text: this.state.todoItemText, completed: false, createdAt: new Date() };
+                axios.post('/todos.json', todoItem)
+                    .then(response => {
+                        console.log(response.data);
+                        this.setState((prevState) => {
+                            return {
+                                todoItems: prevState.todoItems.concat(todoItem),
+                                todoItemText: ''
+                            }
+                        });
+                    })
+                    .catch(error => console.log(error));
             }
         }
 

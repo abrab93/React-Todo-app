@@ -3,7 +3,7 @@ import './App.css';
 import Layout from './hoc/Layout/Layout';
 import Today from './containers/today/Today'
 import History from './containers/history/History';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 class App extends Component {
 
@@ -16,7 +16,7 @@ class App extends Component {
                     <Switch>
                         <Route path="/history" component={History} />
                         <Route path="/today" component={Today} />
-                        <Route path="/" component={Today} />
+                        <Redirect from="/" to="/today" />
                         {/* <Today /> */}
                         {/* <History /> */}
                     </Switch>
