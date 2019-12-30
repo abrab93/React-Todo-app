@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import './App.css';
-import Layout from '../hoc/Layout/Layout';
-import TodoItems from '../components/TodoItems/TodoItems';
-import WriteControl from '../components/WriteControl/WriteControl';
-import Filters from '../components/Filters/Filters';
+import TodoItems from '../../components/TodoItems/TodoItems';
+import WriteControl from '../../components/WriteControl/WriteControl';
+import Filters from '../../components/Filters/Filters';
+import Aux from '../../hoc/Auxiliary/Auxiliary';
 
-class App extends Component {
+class Today extends Component {
 
     state = {
         todoItems: [],
-        filtredTodoItems: [],
         todoItemText: '',
         activeFilter: false,
         completedFilter: false
@@ -20,7 +18,7 @@ class App extends Component {
             if (this.state.todoItemText.trim() !== '') {
                 this.setState((prevState) => {
                     return {
-                        todoItems: prevState.todoItems.concat({ id: (new Date()).getTime(), text: this.state.todoItemText, completed: false }),
+                        todoItems: prevState.todoItems.concat({ id: (new Date()).getTime(), text: this.state.todoItemText, completed: false, createdAt: new Date() }),
                         todoItemText: ''
                     }
                 });
@@ -69,7 +67,7 @@ class App extends Component {
     render() {
 
         return (
-            <Layout >
+            <Aux>
                 <h4 className="card-title">Awesome Todo list</h4>
                 <WriteControl
                     value={this.state.todoItemText}
@@ -91,10 +89,9 @@ class App extends Component {
                         completedClicked={this.completedClickedHandler}
                         clearClicked={this.clearClickedHandler}
                     /> : null}
-            </Layout>
+            </Aux>
         );
     }
-
 }
 
-export default App;
+export default Today

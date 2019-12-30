@@ -3,7 +3,7 @@ import Aux from '../../hoc/Auxiliary/Auxiliary';
 import TodoItem from './TodoItem/TodoItem';
 
 
-class todoItems extends PureComponent {
+class TodoItems extends PureComponent {
 
 
     // shouldComponentUpdate(nextProps, nextState) {
@@ -11,6 +11,7 @@ class todoItems extends PureComponent {
     // }
 
     render() {
+        console.log(this.props.items);
         const FiltredTodoItems = this.props.items.filter(item => {
             return this.props.enableActiveFilter
                 ? item.completed === false
@@ -39,4 +40,4 @@ class todoItems extends PureComponent {
     }
 }
 
-export default todoItems;
+export default TodoItems;
