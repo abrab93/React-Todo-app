@@ -17,13 +17,14 @@ class Today extends Component {
     addTodoItemHandler = (event) => {
         if (event.key === 'Enter') {
             if (this.state.todoItemText.trim() !== '') {
-                const todoItem = { id: (new Date()).getTime(), text: this.state.todoItemText, completed: false, createdAt: new Date() };
+                const todoItem = { text: this.state.todoItemText, completed: false, createdAt: new Date() };
                 axios.post('/todos.json', todoItem)
                     .then(response => {
                         console.log(response.data);
+                        const updateTodoItem = { id: response.data.name, ...todoItem };
                         this.setState((prevState) => {
                             return {
-                                todoItems: prevState.todoItems.concat(todoItem),
+                                todoItems: prevState.todoItems.concat(updateTodoItem),
                                 todoItemText: ''
                             }
                         });
