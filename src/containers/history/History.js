@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import TodoItems from '../../components/TodoItems/TodoItems';
+import axios from '../../axios';
 
 class History extends Component {
 
@@ -11,13 +12,15 @@ class History extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            todoItems: [
-                { id: 1, text: 'text' },
-                { id: 2, text: 'text' },
-                { id: 3, text: 'text' }
-            ]
-        });
+        axios.get('/todos.json')
+            .then(response => {
+                let loadedTodoItems = [];
+                for (const key in response.data) {
+                    loadedTodoItems.push({ id: key, ...response.data[key] });
+                }
+                this.setState({ todoItems: loadedTodoItems });
+            })
+            .catch(error => console.log(error));
     }
 
     render() {

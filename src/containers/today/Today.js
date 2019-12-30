@@ -36,7 +36,13 @@ class Today extends Component {
     }
 
     removeTodoItemHandler = (itemId) => {
-        this.setState({ todoItems: this.state.todoItems.filter(item => item.id !== itemId) });
+        console.log(itemId);
+        axios.delete('/todos/' + itemId + '.json')
+            .then(response => {
+                console.log(response);
+                this.setState({ todoItems: this.state.todoItems.filter(item => item.id !== itemId) });
+            })
+            .catch(error => console.log(error));
     }
 
     todoItemTextChangedHandler = (event) => {
