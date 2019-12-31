@@ -25,7 +25,10 @@ class History extends Component {
                 }
                 this.setState({ todoItems: loadedTodoItems, loading: false });
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                console.log(error);
+                this.setState({ loading: false });
+            });
 
     }
 

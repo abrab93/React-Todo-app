@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Layout from './hoc/Layout/Layout';
-import Today from './containers/today/Today'
-import History from './containers/history/History';
+import Today from './containers/Today/Today'
+import History from './containers/History/History';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 class App extends Component {

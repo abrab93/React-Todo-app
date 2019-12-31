@@ -24,13 +24,17 @@ const withErrorHandler = (WrapedComponent, axios) => {
         componentWillUnmount() {
             console.log('[withErrorHandler]', 'componentWillUnmount');
             axios.interceptors.request.eject(this.reqInterceptor);
-            axios.interceptors.response.eject(this.respIntercepto);
+            axios.interceptors.response.eject(this.respInterceptor);
+        }
+
+        errorConfirmed = () => {
+            this.setState({ error: null });
         }
 
         render() {
             return (
                 <Aux>
-                    <Modal shows={this.state.error}>
+                    <Modal show={this.state.error} closed={this.errorConfirmed}>
                         <p style={{ textAlign: 'center' }}>{this.state.error ? this.state.error.message : null}</p>
                     </Modal>
                     <WrapedComponent {...this.props} />

@@ -22,7 +22,7 @@ class Today extends Component {
             if (this.state.todoItemText.trim() !== '') {
                 this.setState({ loading: true });
                 const todoItem = { text: this.state.todoItemText, completed: false, createdAt: new Date() };
-                axios.post('/todos.jsfon', todoItem)
+                axios.post('/todos.json', todoItem)
                     .then(response => {
                         console.log(response.data);
                         const updateTodoItem = { id: response.data.name, ...todoItem };
@@ -34,7 +34,10 @@ class Today extends Component {
                             }
                         });
                     })
-                    .catch(error => console.log("Error while adding", error));
+                    .catch(error => {
+                        console.log(error);
+                        this.setState({ loading: false });
+                    });
             }
         }
 
@@ -50,7 +53,10 @@ class Today extends Component {
                     loading: false
                 });
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                console.log(error);
+                this.setState({ loading: false });
+            });
     }
 
     todoItemTextChangedHandler = (event) => {
@@ -71,7 +77,10 @@ class Today extends Component {
 
                 this.setState({ todoItems: updateTodoItems, loading: false });
             })
-            .catch(error => console.log(error));;
+            .catch(error => {
+                console.log(error);
+                this.setState({ loading: false });
+            });
     }
 
     allClickedHandler = () => {
