@@ -3,8 +3,7 @@
     text-decoration-color: #3da5f4
 }
 
-.text-primary,
-.list-wrapper .completed .remove {
+.text-primary, .list-wrapper .completed .remove {
     color: #405189 !important
 }
 
@@ -12,11 +11,12 @@
     float: right;
     font-size: 60%;
     font-weight: 400;
-    border-color: rgba(175, 47, 47, 0.1);
+    border-color: rgba(175, 47, 47, 0.2);
     color: inherit;
-	margin: 3px;
-	padding: 3px 7px;
-	text-decoration: none;
-	border: 1px solid transparent;
-	border-radius: 3px;
+    margin: 3px;
+    padding: 3px 7px;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 3px;
 }
+

@@ -25,6 +25,7 @@ class TodoItems extends PureComponent {
                 text={item.text}
                 createdAt={item.createdAt}
                 completed={item.completed}
+                handleActions={this.props.handleActions}
                 removed={() => this.props.removed(item.id)}
                 checked={() => this.props.checked(item.id)} />
         });

@@ -96,6 +96,7 @@ class Today extends Component {
                     items={this.state.todoItems}
                     enableActiveFilter={this.state.activeFilter}
                     enableCompletedFilter={this.state.completedFilter}
+                    handleActions={true}
                     removed={this.removeTodoItemHandler}
                     checked={this.todoItemCompletedHandler} />
                 {this.state.todoItems.length > 0 ?

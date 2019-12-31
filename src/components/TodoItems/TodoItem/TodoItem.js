@@ -13,16 +13,17 @@ const todoItem = (props) => {
         itemClasses.push(classes.completed);
     }
 
-    const todoItem = (
-        <li className={itemClasses.join(' ')}>
-            <div className="form-check col-lg-12">
+    let todoItem = (
+        <li>
+            <div className={itemClasses.concat('form-check col-lg-12').join(' ')}>
                 <label className="form-check-label">
                     <input
                         className="checkbox"
                         type="checkbox"
                         onChange={props.checked}
                         checked={props.completed}
-                        onClick={props.checked} /> {props.text} <i className="input-helper"></i>
+                        onClick={props.checked} /> <i className="input-helper"></i>
+                    {props.text}
                 </label>
             </div>
             <div className={classes.small}>{(new Date(props.createdAt)).toLocaleDateString()}</div>
@@ -32,18 +33,17 @@ const todoItem = (props) => {
         </li>
     )
 
-    if (props.handleActions){
+    if (!props.handleActions) {
         todoItem = (
-            <li className={itemClasses.join(' ')}>
-                <div className="form-check col-lg-12">
+            <li>
+                <div className={itemClasses.concat('form-check col-lg-12').join(' ')}>
                     <label className="form-check-label">
                         <input
                             className="checkbox"
-                            type="checkbox"
-                            checked={props.completed}
-                             /> {props.text} <i className="input-helper"></i>
+                        /> {props.text} <i className="input-helper"></i>
                     </label>
                 </div>
+                {props.completed ? <div className={classes.small}>{'Completed'}</div> : null}
                 <div className={classes.small}>{(new Date(props.createdAt)).toLocaleDateString()}</div>
             </li>
         )
