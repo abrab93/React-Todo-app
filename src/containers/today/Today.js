@@ -34,7 +34,7 @@ class Today extends Component {
                             }
                         });
                     })
-                    .catch(error => console.log(error));
+                    .catch(error => console.log("Error while adding", error));
             }
         }
 
@@ -131,4 +131,4 @@ class Today extends Component {
     }
 }
 
-export default withErrorHandler(Today);
+export default withErrorHandler(Today, axios);

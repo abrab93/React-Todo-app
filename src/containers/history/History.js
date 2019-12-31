@@ -3,6 +3,7 @@ import Aux from '../../hoc/Auxiliary/Auxiliary';
 import TodoItems from '../../components/TodoItems/TodoItems';
 import axios from '../../axios';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 class History extends Component {
 
@@ -49,4 +50,4 @@ class History extends Component {
     }
 }
 
-export default History;
+export default withErrorHandler(History, axios);
