@@ -5,6 +5,7 @@ import Filters from '../../components/Filters/Filters';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import axios from '../../axios';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 class Today extends Component {
 
@@ -21,7 +22,7 @@ class Today extends Component {
             if (this.state.todoItemText.trim() !== '') {
                 this.setState({ loading: true });
                 const todoItem = { text: this.state.todoItemText, completed: false, createdAt: new Date() };
-                axios.post('/todos.json', todoItem)
+                axios.post('/todos.jsfon', todoItem)
                     .then(response => {
                         console.log(response.data);
                         const updateTodoItem = { id: response.data.name, ...todoItem };
@@ -130,4 +131,4 @@ class Today extends Component {
     }
 }
 
-export default Today
+export default withErrorHandler(Today);

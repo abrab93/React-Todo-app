@@ -49,4 +49,4 @@ class History extends Component {
     }
 }
 
-export default History
+export default History;
