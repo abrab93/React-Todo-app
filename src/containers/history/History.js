@@ -14,6 +14,7 @@ class History extends Component {
     }
 
     componentDidMount() {
+        //TODO handle Pagination
         this.setState({ loading: true })
         axios.get('/todos.json')
             .then(response => {

@@ -87,6 +87,7 @@ class Today extends Component {
 
     clearClickedHandler = () => {
         this.setState({ todoItems: this.state.todoItems.filter(item => item.completed === false) });
+        //TODO handle delete for multiples items at the same time on firbase API
     }
 
 
