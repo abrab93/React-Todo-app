@@ -4,6 +4,7 @@ import WriteControl from '../../components/WriteControl/WriteControl';
 import Filters from '../../components/Filters/Filters';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import axios from '../../axios';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 class Today extends Component {
 
@@ -11,12 +12,14 @@ class Today extends Component {
         todoItems: [],
         todoItemText: '',
         activeFilter: false,
-        completedFilter: false
+        completedFilter: false,
+        loading: false
     }
 
     addTodoItemHandler = (event) => {
         if (event.key === 'Enter') {
             if (this.state.todoItemText.trim() !== '') {
+                this.setState({ loading: true });
                 const todoItem = { text: this.state.todoItemText, completed: false, createdAt: new Date() };
                 axios.post('/todos.json', todoItem)
                     .then(response => {
@@ -25,7 +28,8 @@ class Today extends Component {
                         this.setState((prevState) => {
                             return {
                                 todoItems: prevState.todoItems.concat(updateTodoItem),
-                                todoItemText: ''
+                                todoItemText: '',
+                                loading: false
                             }
                         });
                     })
@@ -36,11 +40,14 @@ class Today extends Component {
     }
 
     removeTodoItemHandler = (itemId) => {
-
+        this.setState({ loading: true });
         axios.delete('/todos/' + itemId + '.json')
             .then(response => {
                 console.log(response);
-                this.setState({ todoItems: this.state.todoItems.filter(item => item.id !== itemId) });
+                this.setState({
+                    todoItems: this.state.todoItems.filter(item => item.id !== itemId),
+                    loading: false
+                });
             })
             .catch(error => console.log(error));
     }
@@ -54,14 +61,14 @@ class Today extends Component {
         const todoItemIndex = this.state.todoItems.findIndex(elem => elem.id === itemId);
         const updatedItem = { ...this.state.todoItems[todoItemIndex] }
         updatedItem.completed = !updatedItem.completed;
-
+        this.setState({ loading: true });
         axios.put('/todos/' + itemId + '.json', updatedItem)
             .then(response => {
                 console.log(response);
                 const updateTodoItems = [...this.state.todoItems];
                 updateTodoItems[todoItemIndex] = updatedItem;
 
-                this.setState({ todoItems: updateTodoItems });
+                this.setState({ todoItems: updateTodoItems, loading: false });
             })
             .catch(error => console.log(error));;
     }
@@ -85,6 +92,18 @@ class Today extends Component {
 
     render() {
 
+        let todoItems = <Spinner />;
+
+        if (!this.state.loading) {
+            todoItems = <TodoItems
+                items={this.state.todoItems}
+                enableActiveFilter={this.state.activeFilter}
+                enableCompletedFilter={this.state.completedFilter}
+                handleActions={true}
+                removed={this.removeTodoItemHandler}
+                checked={this.todoItemCompletedHandler} />
+        }
+
         return (
             <Aux>
                 <h4 className="card-title">Awesome Todo list</h4>
@@ -92,13 +111,9 @@ class Today extends Component {
                     value={this.state.todoItemText}
                     clicked={(event) => this.addTodoItemHandler(event)}
                     changed={(event) => this.todoItemTextChangedHandler(event)} />
-                <TodoItems
-                    items={this.state.todoItems}
-                    enableActiveFilter={this.state.activeFilter}
-                    enableCompletedFilter={this.state.completedFilter}
-                    handleActions={true}
-                    removed={this.removeTodoItemHandler}
-                    checked={this.todoItemCompletedHandler} />
+
+                {todoItems}
+
                 {this.state.todoItems.length > 0 ?
                     <Filters
                         todoItems={this.state.todoItems}
