@@ -6,15 +6,15 @@ import axios from '../../axios';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Input from '../../components/UI/Input/Input';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/today';
 
 class Today extends Component {
 
     state = {
-        todoItems: [],
         todoItemText: '',
         activeFilter: false,
         completedFilter: false,
-        loading: false,
         todoInputElement: {
             elementConfig: {
                 type: 'text',
@@ -34,43 +34,16 @@ class Today extends Component {
     addTodoItemHandler = (event) => {
         if (event.key === 'Enter') {
             if (this.state.todoInputElement.valid) {
-                this.setState({ loading: true });
                 const todoItem = { text: this.state.todoItemText, completed: false, createdAt: new Date() };
-                axios.post('/todos.json', todoItem)
-                    .then(response => {
-                        console.log(response.data);
-                        const updateTodoItem = { id: response.data.name, ...todoItem };
-                        this.setState((prevState) => {
-                            return {
-                                todoItems: prevState.todoItems.concat(updateTodoItem),
-                                todoItemText: '',
-                                loading: false
-                            }
-                        });
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        this.setState({ loading: false });
-                    });
+                this.props.onAddTodoItem(todoItem);
+                this.setState({ todoItemText: '' });
             }
         }
 
     }
 
     removeTodoItemHandler = (itemId) => {
-        this.setState({ loading: true });
-        axios.delete('/todos/' + itemId + '.json')
-            .then(response => {
-                console.log(response);
-                this.setState({
-                    todoItems: this.state.todoItems.filter(item => item.id !== itemId),
-                    loading: false
-                });
-            })
-            .catch(error => {
-                console.log(error);
-                this.setState({ loading: false });
-            });
+        this.props.onRemoveTodoItem(itemId);
     }
 
     checkValidite = (validationRules, value) => {
@@ -103,22 +76,10 @@ class Today extends Component {
 
     todoItemCompletedHandler = (itemId) => {
 
-        const todoItemIndex = this.state.todoItems.findIndex(elem => elem.id === itemId);
-        const updatedItem = { ...this.state.todoItems[todoItemIndex] }
+        const todoItemIndex = this.props.todoItems.findIndex(elem => elem.id === itemId);
+        const updatedItem = { ...this.props.todoItems[todoItemIndex] }
         updatedItem.completed = !updatedItem.completed;
-        this.setState({ loading: true });
-        axios.put('/todos/' + itemId + '.json', updatedItem)
-            .then(response => {
-                console.log(response);
-                const updateTodoItems = [...this.state.todoItems];
-                updateTodoItems[todoItemIndex] = updatedItem;
-
-                this.setState({ todoItems: updateTodoItems, loading: false });
-            })
-            .catch(error => {
-                console.log(error);
-                this.setState({ loading: false });
-            });
+        this.props.onCompleteTodoItem(updatedItem);
     }
 
     allClickedHandler = () => {
@@ -134,7 +95,7 @@ class Today extends Component {
     }
 
     clearClickedHandler = () => {
-        this.setState({ todoItems: this.state.todoItems.filter(item => item.completed === false) });
+        this.props.onClearCompletedTodoItems();
         //TODO handle delete for multiples items at the same time on firbase API
     }
 
@@ -143,9 +104,9 @@ class Today extends Component {
 
         let todoItems = <Spinner />;
 
-        if (!this.state.loading) {
+        if (!this.props.loading) {
             todoItems = <TodoItems
-                items={this.state.todoItems}
+                items={this.props.todoItems}
                 enableActiveFilter={this.state.activeFilter}
                 enableCompletedFilter={this.state.completedFilter}
                 handleActions={true}
@@ -167,9 +128,9 @@ class Today extends Component {
 
                 {todoItems}
 
-                {this.state.todoItems.length > 0 ?
+                {this.props.todoItems.length > 0 ?
                     <Filters
-                        todoItems={this.state.todoItems}
+                        todoItems={this.props.todoItems}
                         enableActiveFilter={this.state.activeFilter}
                         enableCompletedFilter={this.state.completedFilter}
                         allClicked={this.allClickedHandler}
@@ -182,4 +143,21 @@ class Today extends Component {
     }
 }
 
-export default withErrorHandler(Today, axios);
+const mapStateToProps = state => {
+    return {
+        todoItems: state.todoItems,
+        todoItemText: state.todoItems,
+        loading: state.loading
+    };
+};
+
+const mapDispatchtoProps = dispatch => {
+    return {
+        onAddTodoItem: (todoItem) => dispatch(actions.addTodoItem(todoItem)),
+        onRemoveTodoItem: (itemId) => dispatch(actions.removeTodoItem(itemId)),
+        onCompleteTodoItem: (updatedTodoItem) => dispatch(actions.completeTodoItem(updatedTodoItem)),
+        onClearCompletedTodoItems: () => dispatch(actions.clearCompletedTodoItems())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchtoProps)(withErrorHandler(Today, axios));
