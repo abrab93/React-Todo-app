@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import TodoItems from '../../components/TodoItems/TodoItems';
-import WriteControl from '../../components/WriteControl/WriteControl';
 import Filters from '../../components/Filters/Filters';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import axios from '../../axios';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import Input from '../../components/UI/Input/Input';
 
 class Today extends Component {
 
@@ -14,12 +14,26 @@ class Today extends Component {
         todoItemText: '',
         activeFilter: false,
         completedFilter: false,
-        loading: false
+        loading: false,
+        todoInputElement: {
+            elementConfig: {
+                type: 'text',
+                placeholder: 'What do you need to do today?'
+            },
+            validation: {
+                required: true,
+                minLength: 4,
+                maxLength: 30
+            },
+            valid: false,
+            touched: false,
+            errorMsg: 'Text length must be between 4 and 30 !!'
+        }
     }
 
     addTodoItemHandler = (event) => {
         if (event.key === 'Enter') {
-            if (this.state.todoItemText.trim() !== '') {
+            if (this.state.todoInputElement.valid) {
                 this.setState({ loading: true });
                 const todoItem = { text: this.state.todoItemText, completed: false, createdAt: new Date() };
                 axios.post('/todos.json', todoItem)
@@ -59,8 +73,32 @@ class Today extends Component {
             });
     }
 
+    checkValidite = (validationRules, value) => {
+        let isValid = true;
+
+        if (validationRules.required) {
+            isValid = value.trim() !== '' && isValid;
+        }
+
+        if (validationRules.minLength) {
+            isValid = value.length >= validationRules.minLength && isValid;
+        }
+
+        if (validationRules.maxLength) {
+            isValid = value.length <= validationRules.maxLength && isValid;
+        }
+
+        return isValid;
+    }
+
     todoItemTextChangedHandler = (event) => {
-        this.setState({ todoItemText: event.target.value });
+        const updatedTodoInputElement = { ...this.state.todoInputElement };
+        updatedTodoInputElement.touched = true;
+        updatedTodoInputElement.valid = this.checkValidite(updatedTodoInputElement.validation, event.target.value);
+        this.setState({
+            todoItemText: event.target.value,
+            todoInputElement: updatedTodoInputElement
+        });
     }
 
     todoItemCompletedHandler = (itemId) => {
@@ -118,9 +156,13 @@ class Today extends Component {
         return (
             <Aux>
                 <h4 className="card-title">Awesome Todo list</h4>
-                <WriteControl
+                <Input
                     value={this.state.todoItemText}
-                    clicked={(event) => this.addTodoItemHandler(event)}
+                    valid={this.state.todoInputElement.valid}
+                    touched={this.state.todoInputElement.touched}
+                    errorMsg={this.state.todoInputElement.errorMsg}
+                    elementConfig={this.state.todoInputElement.elementConfig}
+                    keyPressed={(event) => this.addTodoItemHandler(event)}
                     changed={(event) => this.todoItemTextChangedHandler(event)} />
 
                 {todoItems}
