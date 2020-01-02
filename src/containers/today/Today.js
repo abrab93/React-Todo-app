@@ -33,7 +33,7 @@ class Today extends Component {
 
     addTodoItemHandler = (event) => {
         if (event.key === 'Enter') {
-            if (this.state.todoInputElement.valid) {
+            if (this.state.todoInputElement.valid && this.checkValidite(this.state.todoInputElement.validation, this.state.todoItemText)) {
                 const todoItem = { text: this.state.todoItemText, completed: false, createdAt: new Date() };
                 this.props.onAddTodoItem(todoItem);
                 this.setState({ todoItemText: '' });
