@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 The goal of This project is to learn the basics of ReactJs
-It cover until now: Routing, http calls via Axios, css Modules.
+It cover until now: Routing, http calls via Axios, css Modules, redux (store, reducers, combineReducers, thunk middlware, actions/actionTypes).
 
 ![alt text](./src/assets/images/Todo.PNG)
 
