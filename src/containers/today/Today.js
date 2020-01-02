@@ -145,9 +145,9 @@ class Today extends Component {
 
 const mapStateToProps = state => {
     return {
-        todoItems: state.todoItems,
-        todoItemText: state.todoItems,
-        loading: state.loading
+        todoItems: state.today.todoItems,
+        todoItemText: state.today.todoItems,
+        loading: state.today.loading
     };
 };
 

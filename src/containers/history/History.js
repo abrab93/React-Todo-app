@@ -4,6 +4,8 @@ import TodoItems from '../../components/TodoItems/TodoItems';
 import axios from '../../axios';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import * as actions from '../../store/actions/history';
+import { connect } from 'react-redux';
 
 class History extends Component {
 
@@ -16,35 +18,22 @@ class History extends Component {
 
     componentDidMount() {
         //TODO handle Pagination
-        this.setState({ loading: true })
-        axios.get('/todos.json')
-            .then(response => {
-                let loadedTodoItems = [];
-                for (const key in response.data) {
-                    loadedTodoItems.push({ id: key, ...response.data[key] });
-                }
-                this.setState({ todoItems: loadedTodoItems, loading: false });
-            })
-            .catch(error => {
-                console.log(error);
-                this.setState({ loading: false });
-            });
-
+        this.props.onFetchTodoItems();
     }
 
     render() {
 
         let todoItems = <Spinner />;
 
-        if (!this.state.loading) {
+        if (!this.props.loading) {
             todoItems = (
                 <Aux>
                     <TodoItems
-                        items={this.state.todoItems}
+                        items={this.props.todoItems}
                         enableActiveFilter={this.state.activeFilter}
                         enableCompletedFilter={this.state.completedFilter}
-                        removed={this.removeTodoItemHandler}
-                        checked={this.todoItemCompletedHandler} />
+                        removed={null}
+                        checked={null} />
                 </Aux>
             );
         }
@@ -53,4 +42,17 @@ class History extends Component {
     }
 }
 
-export default withErrorHandler(History, axios);
+const mapStatToProps = state => {
+    return {
+        todoItems: state.history.todoItems,
+        loading: state.history.loading
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onFetchTodoItems: () => dispatch(actions.fetchTodoItems())
+    }
+}
+
+export default connect(mapStatToProps, mapDispatchToProps)(withErrorHandler(History, axios));
