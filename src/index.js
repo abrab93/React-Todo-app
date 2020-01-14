@@ -8,6 +8,7 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import todayReducer from './store/reducers/today';
 import historyReducer from './store/reducers/history';
+import authReducer from './store/reducers/auth';
 import { createStore, compose, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 
@@ -15,7 +16,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
     today: todayReducer,
-    history: historyReducer
+    history: historyReducer,
+    auth: authReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
