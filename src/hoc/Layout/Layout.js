@@ -20,6 +20,9 @@ class Layout extends Component {
                                         <li>
                                             <NavLink to='/history' activeClassName={classes.selected}>History</NavLink>
                                         </li>
+                                        <li>
+                                            <NavLink to='/auth' activeClassName={classes.selected}>Authentication</NavLink>
+                                        </li>
                                     </ul>
                                 </nav>
                                 <div className="card px-3">
