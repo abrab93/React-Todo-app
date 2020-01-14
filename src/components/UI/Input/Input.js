@@ -7,12 +7,9 @@ const Input = (props) => {
 
     let inputClasses = [classes.InputElement].concat("form-control").concat("todo-list-input");
 
-    console.log(props.valid);
-
     if (!props.valid && props.touched) {
         inputClasses.push(classes.Invalid);
     }
-    console.log(inputClasses);
 
     return (
         <Aux>
