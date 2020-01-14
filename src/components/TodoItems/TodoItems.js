@@ -11,7 +11,6 @@ class TodoItems extends PureComponent {
     // }
 
     render() {
-        console.log(this.props.items);
         const FiltredTodoItems = this.props.items.filter(item => {
             return this.props.enableActiveFilter
                 ? item.completed === false

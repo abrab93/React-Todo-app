@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../../store/actions/auth';
-import * as actionsTodo from '../../../store/actions/today'
+import * as actions from '../../../store/actions/index';
 import { Redirect } from 'react-router';
 
 class Logout extends Component {
@@ -19,7 +18,7 @@ class Logout extends Component {
 const mapDispatchToProps = dispatch => {
     return {
         onLogout: () => dispatch(actions.logout()),
-        onClearTodayTodoItem: () => dispatch(actionsTodo.clearTodayTodoItems())
+        onClearTodayTodoItem: () => dispatch(actions.clearTodayTodoItems())
     };
 }
 

@@ -7,7 +7,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Input from '../../components/UI/Input/Input';
 import { connect } from 'react-redux';
-import * as actions from '../../store/actions/today';
+import * as actions from '../../store/actions/index';
 import { checkValidity } from '../../shared/utility';
 
 class Today extends Component {

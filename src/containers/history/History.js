@@ -4,7 +4,7 @@ import TodoItems from '../../components/TodoItems/TodoItems';
 import axios from '../../axios';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import * as actions from '../../store/actions/history';
+import * as actions from '../../store/actions/index';
 import { connect } from 'react-redux';
 
 class History extends Component {

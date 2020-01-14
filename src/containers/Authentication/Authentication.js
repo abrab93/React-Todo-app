@@ -4,7 +4,7 @@ import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import { updateObject, checkValidity } from '../../shared/utility';
 import { connect } from 'react-redux';
-import * as actions from '../../store/actions/auth';
+import * as actions from '../../store/actions/index';
 import { Redirect } from 'react-router-dom';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
