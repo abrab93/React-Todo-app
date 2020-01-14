@@ -3,6 +3,8 @@ import classes from './Authentication.module.css';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import { updateObject, checkValidity } from '../../shared/utility';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/auth';
 
 class Authentication extends Component {
 
@@ -37,7 +39,7 @@ class Authentication extends Component {
                 touched: false
             }
         },
-        isSignup: false
+        isSignin: true
     }
 
     inputChangeHandler = (event, elementIdentifier) => {
@@ -54,11 +56,17 @@ class Authentication extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
+        const authData = {
+            email: this.state.controles.email.value,
+            password: this.state.controles.password.value
+        };
+
+        this.props.onAuthentication(authData, this.state.isSignin);
     }
 
     switchSignTypeHandler = () => {
         this.setState(prevState => {
-            return { isSignup: !prevState.isSignup };
+            return { isSignin: !prevState.isSignin };
         });
     }
 
@@ -66,6 +74,7 @@ class Authentication extends Component {
 
         const formElements = [];
         let form = null;
+        let errorMsg = null;
 
         for (const key in this.state.controles) {
             formElements.push({
@@ -85,19 +94,36 @@ class Authentication extends Component {
                 changed={(event) => this.inputChangeHandler(event, el.elemId)} />
         })
 
+        if (this.props.error) {
+            errorMsg = (<p>{this.props.error.message}</p>)
+        }
+
 
         return (
             <div className={classes.Auth}>
+                {errorMsg}
                 <form onSubmit={this.submitHandler}>
                     {form}
                     <Button btnType='Success'>Success</Button>
                 </form>
                 <Button
                     clicked={this.switchSignTypeHandler}
-                    btnType='Danger'>Switch to {!this.state.isSignup ? 'Signup' : 'Signin'}</Button>
+                    btnType='Danger'>Switch to {this.state.isSignin ? 'Signup' : 'Signin'}</Button>
             </div>
         )
     }
 }
 
-export default Authentication
+const mapStateToProps = state => {
+    return {
+        error: state.auth.error
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuthentication: (authData, isSignin) => dispatch(actions.authentication(authData, isSignin))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Authentication);
