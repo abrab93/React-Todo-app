@@ -63,6 +63,12 @@ const clearTodoItems = (state, action) => {
     });
 }
 
+const clearTodayTodoItems = (state, action) => {
+    return updateObject(state, {
+        todoItems: []
+    });
+}
+
 const reducer = (state = initialState, action) => {
 
     switch (action.type) {
@@ -76,6 +82,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.COMPLETE_TODO_ITEM_SUCCES: return completeTodoItemSucces(state, action);
         case actionTypes.COMPLETE_TODO_ITEM_FAIL: return completeTodoItemFail(state, action);
         case actionTypes.CLEAR_COMPLETE_TODO_ITEMS: return clearTodoItems(state, action);
+        case actionTypes.CLEAR_TODAY_TODO_ITEMS: return clearTodayTodoItems(state, action);
         default: return state;
     }
 }

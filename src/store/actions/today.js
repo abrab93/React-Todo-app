@@ -90,3 +90,7 @@ export const completeTodoItem = (updatedItem, token) => {
 export const clearCompletedTodoItems = () => {
     return { type: actionType.CLEAR_COMPLETE_TODO_ITEMS };
 }
+
+export const clearTodayTodoItems = () => {
+    return { type: actionType.CLEAR_TODAY_TODO_ITEMS };
+}
