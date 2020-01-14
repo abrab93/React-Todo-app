@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import classes from './Layout.module.css';
-import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import NavigationItems from '../../components/NavigationItems/NavigationItems';
 
 class Layout extends Component {
 
@@ -14,17 +14,7 @@ class Layout extends Component {
                         <div className="row container d-flex justify-content-center">
                             <div className="col-lg-12">
                                 {this.props.isAuthenticated ? <nav className={classes.Layout}>
-                                    <ul>
-                                        <li>
-                                            <NavLink to='/today' activeClassName={classes.selected}>Today</NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink to='/history' activeClassName={classes.selected}>History</NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink to='/logout' activeClassName={classes.selected}>Logout</NavLink>
-                                        </li>
-                                    </ul>
+                                    <NavigationItems />
                                 </nav> : null}
                                 <div className="card px-3">
                                     <div className="card-body">
