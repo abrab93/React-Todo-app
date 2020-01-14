@@ -35,7 +35,7 @@ class Today extends Component {
     addTodoItemHandler = (event) => {
         if (event.key === 'Enter') {
             if (this.state.todoInputElement.valid && checkValidity(this.state.todoInputElement.validation, this.state.todoItemText)) {
-                const todoItem = { text: this.state.todoItemText, completed: false, createdAt: new Date() };
+                const todoItem = { userId: this.props.userId, text: this.state.todoItemText, completed: false, createdAt: new Date() };
                 this.props.onAddTodoItem(todoItem, this.props.token);
                 this.setState({ todoItemText: '' });
             }
@@ -131,7 +131,8 @@ const mapStateToProps = state => {
         todoItems: state.today.todoItems,
         todoItemText: state.today.todoItems,
         loading: state.today.loading,
-        token: state.auth.token
+        token: state.auth.token,
+        userId: state.auth.userId
     };
 };
 

@@ -43,6 +43,10 @@ class Authentication extends Component {
         isSignin: true
     }
 
+    componentDidMount() {
+        this.props.onCheckAuthenticationStatus();
+    }
+
     inputChangeHandler = (event, elementIdentifier) => {
         const updatedControles = updateObject(this.state.controles, {
             [elementIdentifier]: updateObject(this.state.controles[elementIdentifier], {
@@ -130,7 +134,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuthentication: (authData, isSignin) => dispatch(actions.authentication(authData, isSignin))
+        onAuthentication: (authData, isSignin) => dispatch(actions.authentication(authData, isSignin)),
+        onCheckAuthenticationStatus: () => dispatch(actions.checkAuthStatus())
     }
 }
 
