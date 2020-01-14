@@ -9,14 +9,18 @@ const initialState = {
 }
 
 const authenticationStart = (state) => {
-    return updateObject(state, { loading: true });
+    return updateObject(state, {
+        loading: true,
+        error: null
+    });
 }
 
 const authenticationSuccess = (state, action) => {
     return updateObject(state, {
         loading: false,
         token: action.token,
-        userId: action.userId
+        userId: action.userId,
+        error: null
     });
 }
 
