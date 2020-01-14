@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import classes from './Layout.module.css';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class Layout extends Component {
 
@@ -12,7 +13,7 @@ class Layout extends Component {
                     <div className="padding">
                         <div className="row container d-flex justify-content-center">
                             <div className="col-lg-12">
-                                <nav className={classes.Layout}>
+                                {this.props.isAuthenticated ? <nav className={classes.Layout}>
                                     <ul>
                                         <li>
                                             <NavLink to='/today' activeClassName={classes.selected}>Today</NavLink>
@@ -21,10 +22,10 @@ class Layout extends Component {
                                             <NavLink to='/history' activeClassName={classes.selected}>History</NavLink>
                                         </li>
                                         <li>
-                                            <NavLink to='/auth' activeClassName={classes.selected}>Authentication</NavLink>
+                                            <NavLink to='/logout' activeClassName={classes.selected}>Logout</NavLink>
                                         </li>
                                     </ul>
-                                </nav>
+                                </nav> : null}
                                 <div className="card px-3">
                                     <div className="card-body">
                                         {this.props.children}
@@ -39,4 +40,10 @@ class Layout extends Component {
     };
 }
 
-export default Layout;
+const mapStateToProps = state => {
+    return {
+        isAuthenticated: state.auth.token !== null
+    };
+}
+
+export default connect(mapStateToProps)(Layout);

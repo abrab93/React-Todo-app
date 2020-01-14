@@ -31,12 +31,20 @@ const authenticationFail = (state, action) => {
     });
 }
 
+const authenticationLogout = (state, action) => {
+    return updateObject(state, {
+        token: null,
+        userId: null
+    });
+}
+
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.AUTHENTICATION_START: return authenticationStart(state);
         case actionTypes.AUTHENTICATION_SUCCESS: return authenticationSuccess(state, action);
         case actionTypes.AUTHENTICATION_FAIL: return authenticationFail(state, action);
+        case actionTypes.AUTHENTICATION_LOGOUT: return authenticationLogout(state, action);
         default: return state;
     }
 }

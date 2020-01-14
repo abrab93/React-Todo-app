@@ -5,6 +5,7 @@ import Input from '../../components/UI/Input/Input';
 import { updateObject, checkValidity } from '../../shared/utility';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/auth';
+import { Redirect } from 'react-router-dom';
 
 class Authentication extends Component {
 
@@ -75,6 +76,7 @@ class Authentication extends Component {
         const formElements = [];
         let form = null;
         let errorMsg = null;
+        let redirect = null;
 
         for (const key in this.state.controles) {
             formElements.push({
@@ -98,9 +100,14 @@ class Authentication extends Component {
             errorMsg = (<p>{this.props.error.message}</p>)
         }
 
+        if (this.props.isAuthenticated) {
+            redirect = <Redirect to='/today' />;
+        }
+
 
         return (
             <div className={classes.Auth}>
+                {redirect}
                 {errorMsg}
                 <form onSubmit={this.submitHandler}>
                     {form}
@@ -116,7 +123,8 @@ class Authentication extends Component {
 
 const mapStateToProps = state => {
     return {
-        error: state.auth.error
+        error: state.auth.error,
+        isAuthenticated: state.auth.token !== null
     };
 }
 

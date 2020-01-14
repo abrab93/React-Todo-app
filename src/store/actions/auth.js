@@ -16,15 +16,26 @@ export const authentication = (authData, isSignin) => {
         if (!isSignin) {
             authEndpoint = authBaseUrl + 'signUp?key=' + api_key
         }
-        console.log(authEndpoint);
         axios.post(authEndpoint, bodyPayload)
             .then(response => {
-                console.log(response.data);
                 dispatch(authenticationSuccess(response.data.idToken, response.data.localId));
+                dispatch(checkAuthExpiration(response.data.expiresIn));
             })
             .catch(err => {
                 dispatch(authenticationFail(err.response.data.error));
             });
+    }
+}
+
+export const logout = () => {
+    return { type: actionTypes.AUTHENTICATION_LOGOUT };
+}
+
+const checkAuthExpiration = (expiresIn) => {
+    return dispatch => {
+        setTimeout(() => {
+            dispatch(logout());
+        }, expiresIn * 1000);
     }
 }
 

@@ -36,7 +36,7 @@ class Today extends Component {
         if (event.key === 'Enter') {
             if (this.state.todoInputElement.valid && checkValidity(this.state.todoInputElement.validation, this.state.todoItemText)) {
                 const todoItem = { text: this.state.todoItemText, completed: false, createdAt: new Date() };
-                this.props.onAddTodoItem(todoItem);
+                this.props.onAddTodoItem(todoItem, this.props.token);
                 this.setState({ todoItemText: '' });
             }
         }
@@ -44,7 +44,7 @@ class Today extends Component {
     }
 
     removeTodoItemHandler = (itemId) => {
-        this.props.onRemoveTodoItem(itemId);
+        this.props.onRemoveTodoItem(itemId, this.props.token);
     }
 
     todoItemTextChangedHandler = (event) => {
@@ -62,7 +62,7 @@ class Today extends Component {
         const todoItemIndex = this.props.todoItems.findIndex(elem => elem.id === itemId);
         const updatedItem = { ...this.props.todoItems[todoItemIndex] }
         updatedItem.completed = !updatedItem.completed;
-        this.props.onCompleteTodoItem(updatedItem);
+        this.props.onCompleteTodoItem(updatedItem, this.props.token);
     }
 
     allClickedHandler = () => {
@@ -130,15 +130,16 @@ const mapStateToProps = state => {
     return {
         todoItems: state.today.todoItems,
         todoItemText: state.today.todoItems,
-        loading: state.today.loading
+        loading: state.today.loading,
+        token: state.auth.token
     };
 };
 
 const mapDispatchtoProps = dispatch => {
     return {
-        onAddTodoItem: (todoItem) => dispatch(actions.addTodoItem(todoItem)),
-        onRemoveTodoItem: (itemId) => dispatch(actions.removeTodoItem(itemId)),
-        onCompleteTodoItem: (updatedTodoItem) => dispatch(actions.completeTodoItem(updatedTodoItem)),
+        onAddTodoItem: (todoItem, token) => dispatch(actions.addTodoItem(todoItem, token)),
+        onRemoveTodoItem: (itemId, token) => dispatch(actions.removeTodoItem(itemId, token)),
+        onCompleteTodoItem: (updatedTodoItem, token) => dispatch(actions.completeTodoItem(updatedTodoItem, token)),
         onClearCompletedTodoItems: () => dispatch(actions.clearCompletedTodoItems())
     };
 };

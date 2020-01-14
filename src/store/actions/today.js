@@ -20,10 +20,10 @@ const addTodoItemFail = (error) => {
     };
 }
 
-export const addTodoItem = (todoItem) => {
+export const addTodoItem = (todoItem, token) => {
     return dispatch => {
         dispatch(addTodoItemStart());
-        axios.post('/todos.json', todoItem)
+        axios.post('/todos.json?auth=' + token, todoItem)
             .then(response => {
                 const updateTodoItem = { id: response.data.name, ...todoItem };
                 dispatch(addTodoItemSucess(updateTodoItem));
@@ -49,10 +49,10 @@ const removeTodoItemFail = () => {
     return { type: actionType.REMOVE_TODO_ITEM_FAIL };
 }
 
-export const removeTodoItem = (itemId) => {
+export const removeTodoItem = (itemId, token) => {
     return dispatch => {
         dispatch(removeTodoItemStart());
-        axios.delete('/todos/' + itemId + '.json')
+        axios.delete('/todos/' + itemId + '.json?auth=' + token)
             .then(response => {
                 dispatch(removeTodoItemSuccess(itemId));
             })
@@ -74,10 +74,10 @@ const completeTodoItemSuccess = (updatedItem) => {
 const completeTodoItemFail = () => {
     return { type: actionType.COMPLETE_TODO_ITEM_FAIL };
 }
-export const completeTodoItem = (updatedItem) => {
+export const completeTodoItem = (updatedItem, token) => {
     return dispatch => {
         dispatch(completeTodoItemStart());
-        axios.put('/todos/' + updatedItem.id + '.json', updatedItem)
+        axios.put('/todos/' + updatedItem.id + '.json?auth=' + token, updatedItem)
             .then(response => {
                 dispatch(completeTodoItemSuccess(updatedItem));
             })

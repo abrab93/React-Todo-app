@@ -16,10 +16,10 @@ const fetchDataFail = () => {
     return { type: actionsType.FETCH_TODO_ITEMS_FAIL }
 }
 
-export const fetchTodoItems = () => {
+export const fetchTodoItems = (token) => {
     return dispatch => {
         dispatch(fetchDataStart());
-        axios.get('/todos.json')
+        axios.get('/todos.json?auth=' + token)
             .then(response => {
                 dispatch(fetchDataSucess(response.data));
             })

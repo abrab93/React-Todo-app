@@ -18,7 +18,7 @@ class History extends Component {
 
     componentDidMount() {
         //TODO handle Pagination
-        this.props.onFetchTodoItems();
+        this.props.onFetchTodoItems(this.props.token);
     }
 
     render() {
@@ -45,13 +45,14 @@ class History extends Component {
 const mapStatToProps = state => {
     return {
         todoItems: state.history.todoItems,
-        loading: state.history.loading
+        loading: state.history.loading,
+        token: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchTodoItems: () => dispatch(actions.fetchTodoItems())
+        onFetchTodoItems: (token) => dispatch(actions.fetchTodoItems(token))
     }
 }
 
