@@ -6,6 +6,7 @@ import { updateObject, checkValidity } from '../../shared/utility';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/auth';
 import { Redirect } from 'react-router-dom';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 class Authentication extends Component {
 
@@ -108,6 +109,10 @@ class Authentication extends Component {
             redirect = <Redirect to='/today' />;
         }
 
+        if (this.props.loading) {
+            form = <Spinner />
+        }
+
 
         return (
             <div className={classes.Auth}>
@@ -128,7 +133,8 @@ class Authentication extends Component {
 const mapStateToProps = state => {
     return {
         error: state.auth.error,
-        isAuthenticated: state.auth.token !== null
+        isAuthenticated: state.auth.token !== null,
+        loading: state.auth.loading
     };
 }
 
