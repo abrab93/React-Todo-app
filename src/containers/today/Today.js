@@ -8,6 +8,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Input from '../../components/UI/Input/Input';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/today';
+import { checkValidity } from '../../shared/utility';
 
 class Today extends Component {
 
@@ -33,7 +34,7 @@ class Today extends Component {
 
     addTodoItemHandler = (event) => {
         if (event.key === 'Enter') {
-            if (this.state.todoInputElement.valid && this.checkValidite(this.state.todoInputElement.validation, this.state.todoItemText)) {
+            if (this.state.todoInputElement.valid && checkValidity(this.state.todoInputElement.validation, this.state.todoItemText)) {
                 const todoItem = { text: this.state.todoItemText, completed: false, createdAt: new Date() };
                 this.props.onAddTodoItem(todoItem);
                 this.setState({ todoItemText: '' });
@@ -46,28 +47,10 @@ class Today extends Component {
         this.props.onRemoveTodoItem(itemId);
     }
 
-    checkValidite = (validationRules, value) => {
-        let isValid = true;
-
-        if (validationRules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
-
-        if (validationRules.minLength) {
-            isValid = value.length >= validationRules.minLength && isValid;
-        }
-
-        if (validationRules.maxLength) {
-            isValid = value.length <= validationRules.maxLength && isValid;
-        }
-
-        return isValid;
-    }
-
     todoItemTextChangedHandler = (event) => {
         const updatedTodoInputElement = { ...this.state.todoInputElement };
         updatedTodoInputElement.touched = true;
-        updatedTodoInputElement.valid = this.checkValidite(updatedTodoInputElement.validation, event.target.value);
+        updatedTodoInputElement.valid = checkValidity(updatedTodoInputElement.validation, event.target.value);
         this.setState({
             todoItemText: event.target.value,
             todoInputElement: updatedTodoInputElement
